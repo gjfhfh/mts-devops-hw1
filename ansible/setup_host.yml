@@ -1,0 +1,7 @@
+---
+- name: Подготовка хоста к работе с контейнерами
+  hosts: vm
+  become: true
+  roles:
+    - deployer
+    - docker

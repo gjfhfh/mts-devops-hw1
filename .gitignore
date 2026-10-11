@@ -2,5 +2,4 @@
 *.tfstate
 *.tfstate.*
 *.tfvars
-inventory.ini
 .DS_Store
