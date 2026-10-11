@@ -1,0 +1,22 @@
+---
+- name: Создать пользователя {{ deployer_user }}
+  ansible.builtin.user:
+    name: "{{ deployer_user }}"
+    shell: /bin/bash
+    groups: sudo
+    append: true
+    create_home: true
+
+- name: Разрешить sudo без пароля
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ deployer_user }}"
+    content: "{{ deployer_user }} ALL=(ALL) NOPASSWD:ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: /usr/sbin/visudo -cf %s
+
+- name: Добавить SSH-ключ для входа по ключу
+  ansible.posix.authorized_key:
+    user: "{{ deployer_user }}"
+    key: "{{ lookup('file', deployer_pubkey_file) }}"
